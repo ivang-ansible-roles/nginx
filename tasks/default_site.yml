@@ -1,0 +1,17 @@
+---
+- name: 'Backup default vhost: 1. Check if exist'
+  stat: "path={{ nginx_default_site }}"
+  register: default_vhost
+
+- name: 'Backup default vhost: 2. Move file'
+  shell: >
+    mv {{ nginx_default_site }} {{ nginx_default_site }}.bak
+    creates={{ nginx_default_site }}.bak
+  when: default_vhost.stat.exists
+  notify: restart nginx
+
+- name: Create new default vhost
+  template:
+    src: vhost.conf
+    dest: "{{ nginx_conf_dir }}/localhost.conf"
+  notify: restart nginx
