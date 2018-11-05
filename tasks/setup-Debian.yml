@@ -1,5 +1,0 @@
----
-- name: Ensure nginx is installed.
-  apt:
-    name: nginx
-    state: latest

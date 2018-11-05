@@ -1,4 +1,5 @@
 ---
+
 - name: restart nginx
   service:
     name: nginx
@@ -11,19 +12,19 @@
 
 - name: nginx fix file permissions
   file:
-    path: "{{ nginx_home }}"
+    path: /var/www
     state: directory
     recurse: yes
-    owner: "{{ nginx_user }}"
-    group: "{{ nginx_group }}"
+    owner: www-data
+    group: www-data
     mode: '0444'
   notify: nginx fix file permissions final
 
 - name: nginx fix file permissions final
   file:
-    path: "{{ nginx_home }}"
+    path: /var/www
     state: directory
     recurse: yes
-    owner: "{{ nginx_user }}"
-    group: "{{ nginx_group }}"
-    mode: "{{ nginx_home_dir_mode }}"
+    owner: www-data
+    group: www-data
+    mode: 'ug=rwX,o=rX'

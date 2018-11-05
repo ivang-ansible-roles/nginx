@@ -1,4 +1,0 @@
----
-#nginx_user: nginx
-#nginx_group: nginx
-nginx_php_fpm_socket: /var/run/php/php7.1-fpm.sock

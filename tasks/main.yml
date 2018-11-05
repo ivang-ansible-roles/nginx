@@ -1,20 +1,24 @@
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-- include: nginx_home.yml
-- include: "setup-{{ ansible_os_family }}.yml"
-- include: permissions.yml
 
-- name: Ensure nginx is started and enabled to start at boot.
-  service:
+- name: Ensure nginx is installed.
+  apt:
     name: nginx
-    state: started
-    enabled: yes
+    state: latest
 
-- name: Configure nginx
+- name: 'Nginx setup: add index.html file'
   template:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
-    backup: yes
-  notify: reload nginx
+    src: index.html
+    dest: /var/www/html/index.html
+  notify: nginx fix file permissions
 
-- include: default_site.yml
+- name: 'Nginx setup: add info.php file'
+  template:
+    src: info.php
+    dest: /var/www/html/info.php
+  notify: nginx fix file permissions
+
+- name: Update default vhost
+  template:
+    src: vhost.conf
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
